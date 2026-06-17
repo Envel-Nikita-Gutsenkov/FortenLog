@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  fortenlog:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: fortenlog_app
+    restart: always
+    volumes:
+      - fortenlog_data:/app/data
+    environment:
+      - RUST_LOG=info
+      - FORTENLOG_DATABASE_URL=/app/data/fortenlog.db
+      - FORTENLOG_DOMAIN=${DOMAIN}
+      - FORTENLOG_ADMIN_USER=${ADMIN_USER}
+      - FORTENLOG_ADMIN_PASS=${ADMIN_PASS}
+    expose:
+      - "3000"
+    ports:
+      - "${APP_BIND_IP:-127.0.0.1}:${APP_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/system/settings || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    container_name: fortenlog_proxy
+    restart: always
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - certbot_certs:/etc/letsencrypt
+      - certbot_webroot:/var/www/certbot:ro
+    depends_on:
+      - fortenlog
+
+  certbot:
+    image: certbot/certbot
+    container_name: fortenlog_certbot
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - certbot_webroot:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  fortenlog_data:
+    driver: local
+  certbot_certs:
+    driver: local
+  certbot_webroot:
+    driver: local

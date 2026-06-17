@@ -1,0 +1,15 @@
+[package]
+name = "forten_log-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[dependencies]
+libfuzzer-sys = "0.4"
+forten_log = { path = ".." }
+
+[[bin]]
+name = "fuzz_pii_masking"
+path = "fuzz_targets/fuzz_pii_masking.rs"
+test = false
+doc = false

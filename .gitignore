@@ -1,0 +1,22 @@
+/target
+/.env
+/data
+/backup.zip
+*.db
+*.db-shm
+*.db-wal
+/target_test*
+/test_data_*
+/test_apikey_*
+/test_v1_*
+/fuzz/target
+/dist
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
