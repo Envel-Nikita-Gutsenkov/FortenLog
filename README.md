@@ -88,10 +88,10 @@
 ## 🛑 The Problem with Modern Telemetry
 If you are building software today, you have two bad choices for telemetry:
 1. **The Industrial Behemoths:** They consume dozens of gigabytes of RAM, require complex Elasticsearch/Kafka clusters to maintain, take days to deploy, and cost a fortune to run.
-2. **The "Simple" Loggers:** They are lightweight, but completely lack analytical depth. They don't support custom dashboards, lack proper SDK integrations, and struggle to scale past a few requests per second without locking up.
+2. **The "Simple" Loggers:** They are essentially just basic log viewers. They lack detailed analytics, proper error tracking, and advanced features, giving you no real insight into your application.
 
 ## ⚡ The FortenLog Solution
-FortenLog is built from the ground up in **async Rust** to solve both problems simultaneously. It is an enterprise-grade observability suite packaged into a **single, incredibly optimized binary**. 
+FortenLog is built from the ground up in **async Rust** to solve both problems simultaneously. It offers the deep, Sentry-level analytics and extensive functionality of the behemoths, while consuming drastically less memory and disk space than even the "simple" loggers. It is an enterprise-grade observability suite packaged into a **single, incredibly optimized binary**. 
 
 ### 🌍 Built for Total Control & Compliance
 * **Runs Anywhere:** From the most powerful dedicated servers down to the **cheapest, smallest VPS** with just 2GB of RAM.
