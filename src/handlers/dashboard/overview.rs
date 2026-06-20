@@ -99,9 +99,9 @@ pub async fn get_dashboard_stats(
                             }
                         };
                     }
-                    agg!(os_dist,      "SELECT os, count(*) FROM events WHERE os IS NOT NULL GROUP BY os");
-                    agg!(browser_dist, "SELECT browser, count(*) FROM events WHERE browser IS NOT NULL GROUP BY browser");
-                    agg!(region_dist,  "SELECT region, count(*) FROM events WHERE region IS NOT NULL GROUP BY region");
+                    agg!(os_dist,      "SELECT os, COUNT(DISTINCT COALESCE(hwid, ip_address)) FROM events WHERE os IS NOT NULL GROUP BY os");
+                    agg!(browser_dist, "SELECT browser, COUNT(DISTINCT COALESCE(hwid, ip_address)) FROM events WHERE browser IS NOT NULL GROUP BY browser");
+                    agg!(region_dist,  "SELECT region, COUNT(DISTINCT COALESCE(hwid, ip_address)) FROM events WHERE region IS NOT NULL GROUP BY region");
                     
                     if let Ok(mut s) = conn.prepare("SELECT release_version, COUNT(*), SUM(is_error), COUNT(DISTINCT hwid) FROM sessions WHERE release_version IS NOT NULL GROUP BY release_version") {
                         if let Ok(rows) = s.query_map([], |row| {
